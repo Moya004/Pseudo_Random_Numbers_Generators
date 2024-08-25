@@ -48,4 +48,4 @@ async def generate(algorithm: str = Form(...),
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app)
+    uvicorn.run('main:app', host="0.0.0.0")
