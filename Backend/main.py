@@ -13,6 +13,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get('/')
+async def home():
+    return {'Succesfuly':'Connected'}
+
 
 @app.post("/generate", response_class=JSONResponse)
 async def generate(algorithm: str = Form(...),
