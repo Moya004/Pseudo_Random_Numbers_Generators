@@ -44,7 +44,7 @@ const NumberList = ({ numbers, selectedIndex, onSelect, itemsPerPage = 10 }) => 
                     <button
                         key={i}
                         onClick={() => handlePageChange(i + 1)}
-                        style={{ margin: '5px', backgroundColor: i + 1 === currentPage ? 'lightblue' : 'black' }}
+                        style={{ margin: '5px', backgroundColor: i + 1 === currentPage ? 'lightpink' : 'lightgray' }}
                     >
                         {i + 1}
                     </button>
