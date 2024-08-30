@@ -24,6 +24,7 @@ const AlgorithmForm = ({ onGenerate }) => {
         onGenerate(algorithm, count, params);
     };
 
+
     return (
         <form className="algorithm-form" onSubmit={handleSubmit}>
             <div>

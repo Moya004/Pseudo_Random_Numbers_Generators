@@ -7,6 +7,25 @@
     margin-bottom: 20px;
 }
 
+.app-container {
+    background-color: #f2f8f8;
+    height: 100vh;
+    padding: 50px;
+    color: #000;
+  }
+  
+  .nav-list a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-list a:hover {
+    color: #000;
+  }
+
 .algorithm-form label {
     display: block;
     margin-bottom: 5px;
