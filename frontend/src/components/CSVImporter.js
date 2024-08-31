@@ -52,7 +52,7 @@ const CSVImporter = ({ onFileUpload, onImportSuccess }) => {
 
             <button 
                 onClick={() => document.getElementById('file-input').click()} 
-                className="btn btn-secundary"
+                className="btn custom-button"
             >
                 Importar archivo CSV
             </button>
