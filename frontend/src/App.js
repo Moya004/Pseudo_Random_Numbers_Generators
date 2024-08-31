@@ -4,6 +4,7 @@ import AlgorithmForm from './components/AlgorithmForm';
 import NumberChart from './components/NumberChart';
 import CSVExporter from './components/CSVExporter';
 import CSVImporter from './components/CSVImporter';
+import StatisticalTest from './components/StatisticalTest';
 import './styles.css';
 import './App.css' 
 
@@ -14,6 +15,7 @@ function App() {
     const [showResults, setShowResults] = useState(false);
     const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
     const [showImporter, setShowImporter] = useState(false);
+    const [showTest, setShowTest] = useState(false);
 
 
     const handleGenerate = async (algorithm, count, params) => {
@@ -56,7 +58,14 @@ function App() {
         setSelectedIndex(null);
         setShowResults(false);
         setSelectedAlgorithm('');
+        setShowTest(false);
       };
+
+      const toggleTestsVisibility = () => {
+        setShowForm(false);
+        setShowResults(false);
+        setShowTest(!showTest); 
+     };
 
       const handleFileUpload = (data) => {
         setNumbers(data);
@@ -69,9 +78,9 @@ function App() {
             <nav>
               <ul className="nav-list d-flex list-unstyled">
                 <li className="mx-3"><button href="#" onClick={toggleFormVisibility} className="btn btn-secundary">Generar números aleatorios</button></li>
-                <li className="mx-3"><button href="#" className="btn btn-secundary">Pruebas estadistícas</button></li>
+                <li className="mx-3"><StatisticalTest numbers={numbers} /></li>
                 <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} /></li>
-                <li className="mx-3"><CSVImporter onFileUpload={handleFileUpload} /></li>
+                <li className="mx-3"><CSVImporter onFileUpload={handleFileUpload}/></li>
               </ul>
             </nav>
           </header>
