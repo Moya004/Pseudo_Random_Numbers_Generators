@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 const AlgorithmForm = ({ onGenerate }) => {
     const [algorithm, setAlgorithm] = useState('');
     const [count, setCount] = useState(10);
@@ -12,16 +12,88 @@ const AlgorithmForm = ({ onGenerate }) => {
         m: ''
     });
 
+    const [errors, setErrors] = useState({});
+    
+    const validate = (name, value) => {
+        let error = null;
+        const intValue = parseInt(value, 10);
+
+        if (name === 'count' && (intValue <= 0 || isNaN(intValue))) {
+            error = 'La cantidad de números a generar debe ser mayor que 0.';
+        } else if (algorithm === 'congruencial_multiplicativo' || algorithm === 'congruencial_mixto') {
+            if (name === 'a') {
+                if (intValue <= 1) {
+                    error = 'El valor de a debe ser mayor que 1.';
+                } else if (params.m && intValue >= params.m) {
+                    error = 'El valor de a debe ser menor que m.';
+                }
+            } else if (name === 'm') {
+                if (intValue <= params.a) {
+                    error = 'El valor de m debe ser mayor que a.';
+                }
+            } else if (name === 'seed') {
+                if (intValue <= 1) {
+                    error = 'El valor de la semilla debe ser mayor que 1.';
+                } else if (params.m && intValue >= params.m) {
+                    error = 'El valor de la semilla debe ser menor que m.';
+                }
+            } else if (algorithm === 'congruencial_mixto' && name === 'c' && intValue <= 1) {
+                error = 'El valor de c debe ser mayor que 1.';
+            }
+        } else if (algorithm === 'blum_blum_shub') {
+            let pValue = name === 'p' ? intValue : params.p || 14879;
+            let qValue = name === 'q' ? intValue : params.q || 19867;
+
+            if (name === 'p') {
+                pValue = intValue;
+                if (intValue <= 1) {
+                    error = 'El valor de p debe ser mayor que 1.';
+                } else if (intValue === qValue) {
+                    error = 'El valor de p debe ser diferente de q.';
+                }
+            } else if (name === 'q') {
+                qValue = intValue;
+                if (intValue <= 1) {
+                    error = 'El valor de q debe ser mayor que 1.';
+                } else if (intValue === pValue) {
+                    error = 'El valor de q debe ser diferente de p.';
+                }
+            } else if (name === 'seed' && (intValue <= 1 || intValue >= (pValue * qValue))) {
+                error = 'El valor de la semilla debe ser mayor que 1 y menor que p*q.';
+            }
+        } else if (algorithm === 'XOR_Shift') {
+            if ((name === 'a' || name === 'b' || name === 'c') && intValue <= 0) {
+                error = `El valor de ${name} debe ser positivo.`;
+            } else if (name === 'seed' && intValue <= 0) {
+                error = 'El valor de la semilla debe ser positivo.';
+            }
+        } else if (algorithm === 'mersenne_twister' && name === 'seed' && intValue <= 0) {
+            error = 'El valor de la semilla debe ser un entero positivo.';
+        }
+
+        setErrors(prev => ({ ...prev, [name]: error }));
+    };
+
+
     const handleChange = (e) => {
-        setParams({
-            ...params,
-            [e.target.name]: e.target.value
-        });
+        const { name, value } = e.target;
+        setParams(prev => ({ ...prev, [name]: value }));
+        validate(name, value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onGenerate(algorithm, count, params);
+        let formIsValid = true;
+        Object.keys(params).forEach(key => {
+            validate(key, params[key]);
+            if (errors[key]) formIsValid = false;
+        });
+
+        if (formIsValid) {
+            onGenerate(algorithm, count, params);
+        } else {
+            alert('Por favor corrige los errores antes de continuar.');
+        }
     };
 
 
@@ -42,12 +114,14 @@ const AlgorithmForm = ({ onGenerate }) => {
             <div>
                 <label>Count:</label>
                 <input type="number" value={count} onChange={(e) => setCount(e.target.value)} />
+                {errors.count && <div className="error">{errors.count}</div>}
             </div>
 
             {algorithm && (
                 <div>
                     <label>Seed:</label>
                     <input type="number" name="seed" value={params.seed} onChange={handleChange} />
+                    {errors.count && <div className="error">{errors.count}</div>}
                 </div>
             )}
 
@@ -56,11 +130,14 @@ const AlgorithmForm = ({ onGenerate }) => {
                     <div>
                         <label>a:</label>
                         <input type="number" name="a" value={params.a} onChange={handleChange} />
+                        {errors.count && <div className="error">{errors.count}</div>}
                     </div>
+
                     {(algorithm === 'XOR_Shift' || algorithm === 'congruencial_mixto') && (
                         <div>
                             <label>c:</label>
                             <input type="number" name="c" value={params.c} onChange={handleChange} />
+                            {errors.count && <div className="error">{errors.count}</div>}
                         </div>
                     )}
                 </>
@@ -70,6 +147,7 @@ const AlgorithmForm = ({ onGenerate }) => {
                 <div>
                     <label>b:</label>
                     <input type="number" name="b" value={params.b} onChange={handleChange} />
+                    {errors.count && <div className="error">{errors.count}</div>}
                 </div>
             )}
 
@@ -78,21 +156,23 @@ const AlgorithmForm = ({ onGenerate }) => {
                     <div>
                         <label>p:</label>
                         <input type="number" name="p" value={params.p} onChange={handleChange} />
+                        {errors.count && <div className="error">{errors.count}</div>}
                     </div>
                     <div>
                         <label>q:</label>
                         <input type="number" name="q" value={params.q} onChange={handleChange} />
+                        {errors.count && <div className="error">{errors.count}</div>}
                     </div>
                 </>
             )}
 
-            {algorithm === 'congruencial_multiplicativo' && (
+            {(algorithm === 'congruencial_multiplicativo'  || algorithm === 'congruencial_mixto' )&& (
                 <div>
                     <label>m:</label>
                     <input type="number" name="m" value={params.m} onChange={handleChange} />
+                    {errors.count && <div className="error">{errors.count}</div>}
                 </div>
             )}
-
             <button type="submit">Generate Numbers</button>
         </form>
     );

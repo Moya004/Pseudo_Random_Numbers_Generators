@@ -5,15 +5,35 @@
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    width: auto;
+    height:fit-content;
+    margin-right: 0px; 
+    margin-left: 30px;
+    flex-shrink: 0;
+    margin-top: 10px;
+}
+
+header {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 150px;
 }
 
 .app-container {
     background-color: #f2f8f8;
-    height: 100vh;
+    height: 750px;
+    width: auto;
     padding: 50px;
     color: #000;
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
-  
+
   .nav-list a {
     color: #333;
     text-decoration: none;
@@ -36,15 +56,15 @@
 .algorithm-form select,
 .algorithm-form input {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
+    padding: 7px;
+    margin-bottom: 12px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 3px;
     box-sizing: border-box;
 }
 
 .algorithm-form button {
-    background-color: #007bff;
+    background-color: #627588;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -53,85 +73,5 @@
 }
 
 .algorithm-form button:hover {
-    background-color: #0056b3;
-}
-
-/* Estilos para NumberList */
-.number-list ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.number-list li {
-    padding: 10px;
-    margin: 5px 0;
-    background-color: #e9ecef;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.number-list li:hover {
-    background-color: #dee2e6;
-}
-
-.number-list li.selected {
-    background-color: #007bff;
-    color: white;
-}
-
-.number-list .pagination {
-    margin-top: 15px;
-    text-align: center;
-}
-
-.number-list .pagination button {
-    background-color: #007bff;
-    color: rgb(0, 0, 0);
-    border: none;
-    padding: 8px 12px;
-    margin: 0 2px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.number-list .pagination button:hover {
-    background-color: #0056b3;
-}
-
-.number-list .pagination button.active {
-    background-color: #0056b3;
-}
-
-
-/* Añade esto a tu archivo CSS */
-.number-list-container {
-    background-color: #f0f0f0; /* Fondo gris claro */
-    padding: 20px;
-    border-radius: 8px;
-}
-
-.number-list-container button {
-    margin: 0 5px;
-    background-color: #007bff; /* Fondo azul para los botones */
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.number-list-container button:hover {
-    background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
-}
-
-.number-list-container button:disabled {
-    background-color: #cccccc; /* Gris claro para botones desactivados */
-    cursor: not-allowed;
-}
-
-.number-list-container button.active {
-    background-color: #0056b3; /* Fondo azul más oscuro para botón activo */
-    font-weight: bold;
+    background-color: #7896b8;
 }
