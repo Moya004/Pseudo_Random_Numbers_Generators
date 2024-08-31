@@ -57,7 +57,7 @@ const NumberChart = ({ numbers, onSelect, selectedIndex }) => {
     };
 
     return (
-        <div style={{ width: '1000%', height: '400px', margin: '2,5%',  marginLeft: '2%'}}>
+        <div style={{ width: '1000%', height: '500px', margin: '2,5%',  marginLeft: '2%'}}>
             <Scatter data={data} options={options} />
         </div>
     );

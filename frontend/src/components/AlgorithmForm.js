@@ -1,4 +1,5 @@
 import React, { useState} from 'react';
+
 const AlgorithmForm = ({ onGenerate }) => {
     const [algorithm, setAlgorithm] = useState('');
     const [count, setCount] = useState(10);
@@ -112,14 +113,14 @@ const AlgorithmForm = ({ onGenerate }) => {
             </div>
 
             <div>
-                <label>Count:</label>
+                <label>Count (mayor que 0):</label>
                 <input type="number" value={count} onChange={(e) => setCount(e.target.value)} />
                 {errors.count && <div className="error">{errors.count}</div>}
             </div>
 
             {algorithm && (
                 <div>
-                    <label>Seed:</label>
+                    <label>Seed (mayor que 1):</label>
                     <input type="number" name="seed" value={params.seed} onChange={handleChange} />
                     {errors.count && <div className="error">{errors.count}</div>}
                 </div>
@@ -128,14 +129,14 @@ const AlgorithmForm = ({ onGenerate }) => {
             {(algorithm === 'XOR_Shift' || algorithm === 'congruencial_mixto' || algorithm === 'congruencial_multiplicativo') && (
                 <>
                     <div>
-                        <label>a:</label>
+                        <label>a (mayor que 1):</label>
                         <input type="number" name="a" value={params.a} onChange={handleChange} />
                         {errors.count && <div className="error">{errors.count}</div>}
                     </div>
 
                     {(algorithm === 'XOR_Shift' || algorithm === 'congruencial_mixto') && (
                         <div>
-                            <label>c:</label>
+                            <label>c (mayor que 1):</label>
                             <input type="number" name="c" value={params.c} onChange={handleChange} />
                             {errors.count && <div className="error">{errors.count}</div>}
                         </div>
@@ -145,7 +146,7 @@ const AlgorithmForm = ({ onGenerate }) => {
 
             {algorithm === 'XOR_Shift' && (
                 <div>
-                    <label>b:</label>
+                    <label>b (mayor que 1):</label>
                     <input type="number" name="b" value={params.b} onChange={handleChange} />
                     {errors.count && <div className="error">{errors.count}</div>}
                 </div>
@@ -154,12 +155,12 @@ const AlgorithmForm = ({ onGenerate }) => {
             {algorithm === 'blum_blum_shub' && (
                 <>
                     <div>
-                        <label>p:</label>
+                        <label>p (mayor que 1):</label>
                         <input type="number" name="p" value={params.p} onChange={handleChange} />
                         {errors.count && <div className="error">{errors.count}</div>}
                     </div>
                     <div>
-                        <label>q:</label>
+                        <label>q (mayor que 1):</label>
                         <input type="number" name="q" value={params.q} onChange={handleChange} />
                         {errors.count && <div className="error">{errors.count}</div>}
                     </div>
@@ -168,7 +169,7 @@ const AlgorithmForm = ({ onGenerate }) => {
 
             {(algorithm === 'congruencial_multiplicativo'  || algorithm === 'congruencial_mixto' )&& (
                 <div>
-                    <label>m:</label>
+                    <label>m (debe ser mayor que a) : </label>
                     <input type="number" name="m" value={params.m} onChange={handleChange} />
                     {errors.count && <div className="error">{errors.count}</div>}
                 </div>
