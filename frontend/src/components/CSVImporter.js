@@ -13,6 +13,29 @@ const CSVImporter = ({ onFileUpload }) => {
         }
     };
 
+    const handleFileUpload = (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        fetch('http://localhost:3000/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al subir el archivo');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Archivo procesado:', data);
+            onFileUpload(data);
+        })
+        .catch(error => {
+            console.error('Error al subir el archivo:', error);
+        });
+    };
+
     return (
         <div className="csv-importer">
             <input
@@ -20,7 +43,16 @@ const CSVImporter = ({ onFileUpload }) => {
                 accept=".csv"
                 onChange={handleFileChange}
                 className="form-control"
+                style={{ display: 'none' }}
+                id="file-input"
             />
+
+            <button 
+                onClick={() => document.getElementById('file-input').click()} 
+                className="btn btn-secundary"
+            >
+                Importar archivo CSV
+            </button>
             {error && <p className="text-danger">{error}</p>}
         </div>
     );

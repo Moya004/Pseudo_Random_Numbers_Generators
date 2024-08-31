@@ -3,7 +3,7 @@ import React from 'react';
 const CSVExporter = ({ numbers, algorithm}) => {
     const handleExportCSV = () => {
 
-        if (!algorithm && algorithm === 'select an algorithm') {
+        if (!algorithm || algorithm === 'select an algorithm') {
             alert('Por favor selecciona un algoritmo antes de exportar.');
             return;
         }

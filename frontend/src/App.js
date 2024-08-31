@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import AlgorithmForm from './components/AlgorithmForm';
 import NumberChart from './components/NumberChart';
 import CSVExporter from './components/CSVExporter';
+import CSVImporter from './components/CSVImporter';
 import './styles.css';
 import './App.css' 
 
@@ -12,6 +13,7 @@ function App() {
     const [showForm, setShowForm] = useState(false); 
     const [showResults, setShowResults] = useState(false);
     const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
+    const [showImporter, setShowImporter] = useState(false);
 
 
     const handleGenerate = async (algorithm, count, params) => {
@@ -56,6 +58,10 @@ function App() {
         setSelectedAlgorithm('');
       };
 
+      const handleFileUpload = (data) => {
+        setNumbers(data);
+      };
+
     return (
         <div className="app-container">
           <header className="d-flex justify-content-between align-items-center mb-4">
@@ -65,7 +71,7 @@ function App() {
                 <li className="mx-3"><button href="#" onClick={toggleFormVisibility} className="btn btn-secundary">Generar números aleatorios</button></li>
                 <li className="mx-3"><button href="#" className="btn btn-secundary">Pruebas estadistícas</button></li>
                 <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} /></li>
-                <li className="mx-3"><button href="#" className="btn btn-secundary">Importar archivo CSV</button></li>
+                <li className="mx-3"><CSVImporter onFileUpload={handleFileUpload} /></li>
               </ul>
             </nav>
           </header>
