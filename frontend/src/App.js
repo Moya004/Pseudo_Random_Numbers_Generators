@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import AlgorithmForm from './components/AlgorithmForm';
 import NumberChart from './components/NumberChart';
+import CSVExporter from './components/CSVExporter';
 import './styles.css';
 import './App.css' 
 
@@ -10,9 +11,18 @@ function App() {
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [showForm, setShowForm] = useState(false); 
     const [showResults, setShowResults] = useState(false);
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
 
 
     const handleGenerate = async (algorithm, count, params) => {
+      if (algorithm === 'Select an algorithm') {
+        setNumbers([]);
+        setSelectedAlgorithm('');
+        setShowResults(false);
+        return;
+      }
+      setSelectedAlgorithm(algorithm);
+        
         const formData = new FormData();
         formData.append('algorithm', algorithm);
         formData.append('count', count);
@@ -31,6 +41,7 @@ function App() {
         setNumbers(data);
         setSelectedIndex(null); 
         setShowResults(true);
+        
     };
 
     const handleSelect = (index) => {
@@ -42,24 +53,8 @@ function App() {
         setNumbers([]); 
         setSelectedIndex(null);
         setShowResults(false);
+        setSelectedAlgorithm('');
       };
-
-      const handleExportCSV = () => {
-        if (numbers.length === 0) {
-            alert('No hay números generados para exportar.');
-            return;
-        }
-
-        // Generar contenido CSV
-        const csvContent = 'data:text/csv;charset=utf-8,' + numbers.join('\n');
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement('a');
-        link.setAttribute('href', encodedUri);
-        link.setAttribute('download', 'generated_numbers.csv');
-        document.body.appendChild(link); 
-        link.click();
-        document.body.removeChild(link);
-    };
 
     return (
         <div className="app-container">
@@ -67,10 +62,10 @@ function App() {
             <h1 className="logo"></h1>
             <nav>
               <ul className="nav-list d-flex list-unstyled">
-                <li className="mx-3"><a href="#" onClick={toggleFormVisibility}>Generar números aleatorios</a></li>
-                <li className="mx-3"><a href="#">Pruebas estadistícas</a></li>
-                <li className="mx-3"><a href="#"onClick={handleExportCSV}>Exportar archivo CSV</a></li>
-                <li className="mx-3"><a href="#">Importar archivo CSV</a></li>
+                <li className="mx-3"><button href="#" onClick={toggleFormVisibility} className="btn btn-secundary">Generar números aleatorios</button></li>
+                <li className="mx-3"><button href="#" className="btn btn-secundary">Pruebas estadistícas</button></li>
+                <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} /></li>
+                <li className="mx-3"><button href="#" className="btn btn-secundary">Importar archivo CSV</button></li>
               </ul>
             </nav>
           </header>

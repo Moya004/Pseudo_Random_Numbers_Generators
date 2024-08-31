@@ -1,6 +1,6 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 
-const AlgorithmForm = ({ onGenerate }) => {
+const AlgorithmForm = ({ onGenerate, reset}) => {
     const [algorithm, setAlgorithm] = useState('');
     const [count, setCount] = useState(10);
     const [params, setParams] = useState({
@@ -14,7 +14,7 @@ const AlgorithmForm = ({ onGenerate }) => {
     });
 
     const [errors, setErrors] = useState({});
-    
+
     const validate = (name, value) => {
         let error = null;
         const intValue = parseInt(value, 10);
@@ -84,6 +84,12 @@ const AlgorithmForm = ({ onGenerate }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (!algorithm) {
+            alert('Por favor selecciona un algoritmo.');
+            return;
+        }
+
         let formIsValid = true;
         Object.keys(params).forEach(key => {
             validate(key, params[key]);
@@ -97,6 +103,22 @@ const AlgorithmForm = ({ onGenerate }) => {
         }
     };
 
+        useEffect(() => {
+            if (reset) {
+                setAlgorithm('');
+                setCount(10);
+                setParams({
+                    b: '',
+                    seed: '',
+                    p: '',
+                    q: '',
+                    a: '',
+                    c: '',
+                    m: ''
+                });
+                setErrors({});
+            }
+        }, [reset]);
 
     return (
         <form className="algorithm-form" onSubmit={handleSubmit}>
