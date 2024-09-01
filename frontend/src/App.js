@@ -55,6 +55,16 @@ function App() {
     };
 
     const toggleFormVisibility = () => {
+
+      if(showForm)
+      {
+        setShowForm(false);
+        setShowMainDesign(true);
+        setNumbers([]); 
+        setShowResults(false);
+        setSelectedAlgorithm('');
+
+      } else{
         setShowForm(true);
         setNumbers([]); 
         setSelectedIndex(null);
@@ -62,6 +72,7 @@ function App() {
         setSelectedAlgorithm('');
         setShowTest(false);
         setShowMainDesign(false);
+      }
       };
 
       const toggleTestsVisibility = () => {
@@ -89,7 +100,7 @@ function App() {
           {showMainDesign && (
            <div className="center-container">
             <div className="logo-container">
-             <h1 className="title">Random Numbers Simulator</h1>
+             <h1 className="title">Random Numbers Generator</h1>
          </div>
         </div>
         )}
