@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 
-function StatisticalTests({ numbers }) {
+function StatisticalTests({ numbers, reset }) {
     const [selectedTest, setSelectedTest] = useState('');
     const [testResult, setTestResult] = useState(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -13,7 +13,18 @@ function StatisticalTests({ numbers }) {
         'Prueba 5'
     ];
 
-    const handleTestSelection = async (event) => {
+    useEffect(() => {
+        setTestResult(null);
+        setSelectedTest('');
+    }, [reset]);
+
+    const handleTestSelection = async (test) => {
+        
+        if (!numbers || numbers.length === 0) {
+            alert('No hay números generados para realizar pruebas estadistícas.');
+            return;
+        }
+        
         setSelectedTest(test);
 
         try {
@@ -29,17 +40,18 @@ function StatisticalTests({ numbers }) {
             });
 
             const data = await response.json();
-            setTestResult(data.passed ? 'Pasó 😊' : 'No pasó 😞');
+            alert(data.passed ? 'Pasó 😊' : 'No pasó 😞');
         } catch (error) {
             console.error('Error al realizar la prueba:', error);
-            setTestResult('Error al realizar la prueba 😞');
+            alert('Error al realizar la prueba 😞');
         }
     };
 
     const toggleVisibility = () => {
         setIsVisible(!isVisible);
+        setTestResult(null); 
     };
-
+      
     return (
         <div className="dropdown">
             <button 

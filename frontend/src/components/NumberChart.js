@@ -14,10 +14,10 @@ const NumberChart = ({ numbers, onSelect, selectedIndex }) => {
                 index
             })),
             backgroundColor: numbers.map((_, index) =>
-                index === selectedIndex ? 'rgba(255, 99, 132, 0.6)' : 'rgba(75, 192, 192, 0.6)'
+                index === selectedIndex ? '#80a8a8' : '#80a8a8'
             ),
             borderColor: numbers.map((_, index) =>
-                index === selectedIndex ? 'rgba(255, 99, 132, 1)' : 'rgba(75, 192, 192, 1)'
+                index === selectedIndex ? '#80a8a8' : '#80a8a8'
             ),
             borderWidth: 5,
             pointRadius: 1
