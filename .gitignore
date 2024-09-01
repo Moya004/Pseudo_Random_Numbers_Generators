@@ -17,7 +17,7 @@ sdist/
 # FastAPI
 .env
 *.env
-
+tester.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

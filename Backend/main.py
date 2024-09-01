@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from generators import MersenneTwister, XORShift, BBS, CongruencialMixto, Multiplicativo
+from statisticalTests import PruebaFrecuencias, PruebaPromedios
 
 app = FastAPI()
 
@@ -46,6 +47,28 @@ async def generate(algorithm: str = Form(...),
     scaled_numbers = [generator.random() for _ in range(count)]
     
     return JSONResponse(scaled_numbers)
+
+
+@app.post('/test', response_class=JSONResponse)
+async def test(prueba: str = Form(...),
+               datos: List[float] = Form(...)) -> bool:
+    
+    match prueba:
+
+        case 'Promedios':
+            tester = PruebaPromedios()
+
+        case 'Frecuencias':
+            tester = PruebaFrecuencias()
+
+        case 'Kolmogorov-smirnov':
+            pass
+
+        case _:
+            return JSONResponse({"error": "Invalid test selected"}, status_code=400)
+        
+    
+    return JSONResponse(tester.test(data= datos))
 
 if __name__ == "__main__":
     import uvicorn
