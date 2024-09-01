@@ -14,13 +14,13 @@ const NumberChart = ({ numbers, onSelect, selectedIndex }) => {
                 index
             })),
             backgroundColor: numbers.map((_, index) =>
-                index === selectedIndex ? 'rgba(255, 99, 132, 0.6)' : 'rgba(75, 192, 192, 0.6)'
+                index === selectedIndex ? '#80a8a8' : '#80a8a8'
             ),
             borderColor: numbers.map((_, index) =>
-                index === selectedIndex ? 'rgba(255, 99, 132, 1)' : 'rgba(75, 192, 192, 1)'
+                index === selectedIndex ? '#80a8a8' : '#80a8a8'
             ),
-            borderWidth: 1,
-            pointRadius: 5
+            borderWidth: 5,
+            pointRadius: 1
         }]
     };
 
@@ -31,6 +31,9 @@ const NumberChart = ({ numbers, onSelect, selectedIndex }) => {
             x: {
                 min: 0,
                 max: 1,
+                ticks: {
+                    stepSize: 0.1
+                },
                 title: {
                     display: true,
                     text: 'X-axis'
@@ -54,7 +57,7 @@ const NumberChart = ({ numbers, onSelect, selectedIndex }) => {
     };
 
     return (
-        <div style={{ width: '65%', height: '100%', margin: '0 auto' }}>
+        <div style={{ width: '1000%', height: '500px', margin: '2,5%',  marginLeft: '2%'}}>
             <Scatter data={data} options={options} />
         </div>
     );
