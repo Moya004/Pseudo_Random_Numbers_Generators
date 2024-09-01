@@ -16,6 +16,8 @@ function App() {
     const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
     const [showImporter, setShowImporter] = useState(false);
     const [showTest, setShowTest] = useState(false);
+    const [showMainDesign, setShowMainDesign] = useState(true);
+
 
 
     const handleGenerate = async (algorithm, count, params) => {
@@ -59,6 +61,7 @@ function App() {
         setShowResults(false);
         setSelectedAlgorithm('');
         setShowTest(false);
+        setShowMainDesign(false);
       };
 
       const toggleTestsVisibility = () => {
@@ -73,8 +76,7 @@ function App() {
 
     return (
         <div className="app-container">
-          <header className="d-flex justify-content-between align-items-center mb-4">
-            <h1 className="logo"></h1>
+        <header className="header-container"> <h1 className="title"> </h1>
             <nav>
               <ul className="nav-list d-flex list-unstyled">
                 <li className="mx-3"><button href="#" onClick={toggleFormVisibility} className="btn custom-button">Generar números aleatorios</button></li>
@@ -84,6 +86,13 @@ function App() {
               </ul>
             </nav>
           </header>
+          {showMainDesign && (
+           <div className="center-container">
+            <div className="logo-container">
+             <h1 className="title">Random Numbers Simulator</h1>
+         </div>
+        </div>
+        )}
           <main>
             {showForm && <AlgorithmForm onGenerate={handleGenerate} />} { }
             {showResults && numbers.length > 0 &&

@@ -43,7 +43,7 @@ function StatisticalTests({ numbers }) {
     return (
         <div className="dropdown">
             <button 
-                className="btn custom-button"
+                className="btn custom-button3"
                 onClick={toggleVisibility}
                 id="dropdownMenuButton"
                 aria-haspopup="true" 

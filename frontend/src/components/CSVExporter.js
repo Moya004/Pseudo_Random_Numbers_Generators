@@ -24,7 +24,7 @@ const CSVExporter = ({ numbers, algorithm}) => {
     };
 
     return (
-        <button onClick={handleExportCSV} className="btn custom-button">
+        <button onClick={handleExportCSV} className="btn custom-button1">
             Exportar archivo CSV
         </button>
     );
