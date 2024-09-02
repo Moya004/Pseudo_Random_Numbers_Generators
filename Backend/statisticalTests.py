@@ -34,7 +34,7 @@ class PruebaFrecuencias(StatisticalTest):
 
         Xo = sumatoria / Fe
         
-        Xo2 = chi2.ppf(0.95, int(len(FoS) ** 0.5) - 1)
+        Xo2 = chi2.ppf(0.95, int(len(FoS)) - 1)
 
         return bool(Xo < Xo2)
 
