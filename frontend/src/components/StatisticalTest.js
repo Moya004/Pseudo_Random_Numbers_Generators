@@ -6,10 +6,10 @@ function StatisticalTests({ numbers, reset }) {
     const [isVisible, setIsVisible] = useState(false);
 
     const tests = [
-        'Prueba 1',
-        'Prueba 2',
-        'Prueba 3',
-        'Prueba 4',
+        'Promedios',
+        'Frecuencias',
+        'Kolmogorov-smirnov',
+        'Series',
         'Prueba 5'
     ];
 
@@ -26,17 +26,19 @@ function StatisticalTests({ numbers, reset }) {
         }
         
         setSelectedTest(test);
+        
+        const requestData = {
+            prueba: test,
+            datos: numbers
+        }
 
         try {
             const response = await fetch('https://pseudo-random-numbers-generators.onrender.com/test', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    test: test,
-                    numbers: numbers,
-                }),
+                body: JSON.stringify(requestData)
             });
 
             const data = await response.json();

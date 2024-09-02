@@ -1,5 +1,8 @@
 from abc import abstractmethod, ABC
 from scipy.stats import chi2
+from pydantic import BaseModel
+from typing import List
+
 
 class StatisticalTest(ABC):
     
@@ -7,21 +10,23 @@ class StatisticalTest(ABC):
     def test(self, data: list[float]) -> bool: ...
 
 
+class TestRequest(BaseModel):
+    prueba: str
+    datos: List[float]
+
 class PruebaPromedios(StatisticalTest):
     
     def test(self, data: list[float]) -> bool:
         mean = sum(data) / len(data)
         Zo = (mean -  0.5) * len(data) ** 0.5  / (1/12) ** 0.5
 
-        return abs(Zo) < 1.96
+        return bool(abs(Zo) < 1.96)
     
 
 class PruebaFrecuencias(StatisticalTest):
 
     def test(self, data: list[float]) -> bool:
         
-        
-        mean = sum(data) / len(data)
         FoS, Fe = self.__FeFo(data)
         sumatoria = 0
         for Fo in FoS:
@@ -29,14 +34,14 @@ class PruebaFrecuencias(StatisticalTest):
 
         Xo = sumatoria / Fe
         
-        Xo2 = chi2.ppf(0.95, (len(FoS) ** 0.5 )- 1)
+        Xo2 = chi2.ppf(0.95, int(len(FoS) ** 0.5) - 1)
 
-        return Xo < Xo2
+        return bool(Xo < Xo2)
 
     def __FeFo(self, datos: list[float]) -> tuple:
         N = len(datos)
         m = int(N ** 0.5)  # Cantidad de rangos
-        Fo = [0] * m  # Inicializar frecuencias observadas
+        Fo = [0 for _ in range(m)]  # Inicializar frecuencias observadas
 
         # Calcular el ancho de cada rango
         rango_ancho = 1 / m
@@ -60,7 +65,8 @@ class PruebaSeries(StatisticalTest):
         
         Xo = self.__estadistico(pairs)
         Xo2 = chi2.ppf(0.95, len(data) - 1)
-        return Xo < Xo2
+        
+        return bool(Xo < Xo2)
 
     def __estadistico(self, pairs: list[tuple]) -> float:
         N = len(pairs)

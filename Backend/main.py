@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from generators import MersenneTwister, XORShift, BBS, CongruencialMixto, Multiplicativo
-from statisticalTests import PruebaFrecuencias, PruebaPromedios, PruebaSeries, PruebaKolmogorovSmirnov
+from statisticalTests import PruebaFrecuencias, PruebaPromedios, PruebaSeries, PruebaKolmogorovSmirnov, TestRequest
 
 app = FastAPI()
 
@@ -50,10 +50,9 @@ async def generate(algorithm: str = Form(...),
 
 
 @app.post('/test', response_class=JSONResponse)
-async def test(prueba: str = Form(...),
-               datos: List[float] = Form(...)) -> bool:
+async def test(request: TestRequest):
     
-    match prueba:
+    match request.prueba:
 
         case 'Promedios':
             tester = PruebaPromedios()
@@ -71,8 +70,8 @@ async def test(prueba: str = Form(...),
             return JSONResponse({"error": "Invalid test selected"}, status_code=400)
         
     
-    return JSONResponse(tester.test(data= datos))
+    return JSONResponse({'passed' : tester.test(data= request.datos)})
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run('main:app', host="0.0.0.0")
+    uvicorn.run('main:app')
