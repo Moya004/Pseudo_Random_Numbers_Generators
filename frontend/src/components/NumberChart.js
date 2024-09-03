@@ -4,7 +4,7 @@ import { Chart as ChartJS, Title, Tooltip, Legend, PointElement, LinearScale, Ca
 
 ChartJS.register(Title, Tooltip, Legend, PointElement, LinearScale, CategoryScale);
 
-const NumberChart = ({ numbers, onSelect, selectedIndex }) => {
+const NumberChart = ({ numbers, onSelect, selectedIndex, marginTop }) => {
     const data = {
         datasets: [{
             label: 'Generated Numbers',
@@ -57,7 +57,7 @@ const NumberChart = ({ numbers, onSelect, selectedIndex }) => {
     };
 
     return (
-        <div style={{ width: '1000%', height: '500px', margin: '2,5%',  marginLeft: '2%'}}>
+        <div style={{ width: '1000%', height: '500px', margin: '2,5%',  marginLeft: '2%', marginTop: marginTop}}>
             <Scatter data={data} options={options} />
         </div>
     );

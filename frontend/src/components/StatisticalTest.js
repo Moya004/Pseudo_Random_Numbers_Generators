@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from 'react';
+import NumberChart from './NumberChart';
 
 function StatisticalTests({ numbers, reset }) {
     const [selectedTest, setSelectedTest] = useState('');
@@ -22,6 +23,7 @@ function StatisticalTests({ numbers, reset }) {
         
         if (!numbers || numbers.length === 0) {
             alert('No hay números generados para realizar pruebas estadistícas.');
+            setIsVisible(false);
             return;
         }
         
@@ -42,8 +44,12 @@ function StatisticalTests({ numbers, reset }) {
             });
 
             const data = await response.json();
+
             alert(data.passed ? 'Pasó 😊' : 'No pasó 😞');
+            setIsVisible(false);
+
         } catch (error) {
+            setIsVisible(false);
             console.error('Error al realizar la prueba:', error);
             alert('Error al realizar la prueba 😞');
         }
@@ -72,6 +78,8 @@ function StatisticalTests({ numbers, reset }) {
                             key={index} 
                             className="dropdown-item"
                             onClick={() => handleTestSelection(test)}
+                            style={{ fontFamily: 'Helvetica', fontSize: '14px' }}
+                            
                         >
                             {test}
                         </button>
