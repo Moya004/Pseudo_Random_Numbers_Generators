@@ -19,7 +19,6 @@ function App() {
     const [showMainDesign, setShowMainDesign] = useState(true);
 
 
-
     const handleGenerate = async (algorithm, count, params) => {
       if (algorithm === 'Select an algorithm') {
         setNumbers([]);
@@ -82,8 +81,12 @@ function App() {
      };
 
       const handleFileUpload = (data) => {
-        setNumbers(data);
+        setNumbers(data.numbers);
       };
+
+      const handleImportSuccess = () => {
+        alert('Archivo importado y números procesados');
+    };
 
     return (
         <div className="app-container">
@@ -93,7 +96,7 @@ function App() {
                 <li className="mx-3"><button href="#" onClick={toggleFormVisibility} className="btn custom-button">Generar números aleatorios</button></li>
                 <li className="mx-3"><StatisticalTest numbers={numbers} /></li>
                 <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} /></li>
-                <li className="mx-3"><CSVImporter onFileUpload={handleFileUpload}/></li>
+                <li className="mx-3"><CSVImporter onFileUpload={handleFileUpload} onImportSuccess={handleImportSuccess}/></li>
               </ul>
             </nav>
           </header>

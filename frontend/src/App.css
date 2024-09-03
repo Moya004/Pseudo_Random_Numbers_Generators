@@ -171,7 +171,7 @@ header {
 }
 
 .custom-button1:hover {
-    background-color: f8f8f8; /* Color de fondo al pasar el mouse */
+    background-color: #f8f8f8; /* Color de fondo al pasar el mouse */
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
 }
@@ -195,7 +195,7 @@ header {
 }
 
 .custom-button2:hover {
-    background-color: f8f8f8; /* Color de fondo al pasar el mouse */
+    background-color: #f8f8f8; /* Color de fondo al pasar el mouse */
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
 }
@@ -219,7 +219,7 @@ header {
 }
 
 .custom-button3:hover {
-    background-color: f8f8f8; /* Color de fondo al pasar el mouse */
+    background-color: #f8f8f8; /* Color de fondo al pasar el mouse */
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
 }
