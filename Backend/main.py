@@ -1,9 +1,12 @@
-from fastapi import FastAPI, Form
+from fastapi import FastAPI, Form, File, UploadFile
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from generators import MersenneTwister, XORShift, BBS, CongruencialMixto, Multiplicativo
 from statisticalTests import PruebaFrecuencias, PruebaPromedios, PruebaSeries, PruebaKolmogorovSmirnov, PruebaPoker, TestRequest
+import csv
+from io import StringIO
+
 
 app = FastAPI()
 
@@ -19,6 +22,20 @@ app.add_middleware(
 async def home():
     return {'Succesfuly':'Connected'}
 
+@app.post('/import', response_class=JSONResponse)
+async def Import(archivo: UploadFile = File(...)) -> List[float]:
+    contenido = await archivo.read()
+
+    archivo_csv = StringIO(contenido.decode("utf-8"))
+    lector_csv = csv.reader(archivo_csv)
+    
+    res = []
+
+    for line in lector_csv:
+        for num in line:
+            res.append(float(num))
+
+    return JSONResponse(res)
 
 @app.post("/generate", response_class=JSONResponse)
 async def generate(algorithm: str = Form(...),
@@ -76,4 +93,4 @@ async def test(request: TestRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run('main:app', host='0.0.0.0')
+    uvicorn.run('main:app')
