@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from generators import MersenneTwister, XORShift, BBS, CongruencialMixto, Multiplicativo
-from statisticalTests import PruebaFrecuencias, PruebaPromedios, PruebaSeries, PruebaKolmogorovSmirnov, TestRequest
+from statisticalTests import PruebaFrecuencias, PruebaPromedios, PruebaSeries, PruebaKolmogorovSmirnov, PruebaPoker, TestRequest
 
 app = FastAPI()
 
@@ -66,6 +66,8 @@ async def test(request: TestRequest):
         case 'Series':
             tester = PruebaSeries()
             
+        case 'Poker':
+            tester = PruebaPoker()
         case _:
             return JSONResponse({"error": "Invalid test selected"}, status_code=400)
         
