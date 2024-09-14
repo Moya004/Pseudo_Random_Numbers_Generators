@@ -11,7 +11,7 @@ function StatisticalTests({ numbers, reset }) {
         'Frecuencias',
         'Kolmogorov-smirnov',
         'Series',
-        'Prueba 5'
+        'Poker'
     ];
 
     useEffect(() => {
