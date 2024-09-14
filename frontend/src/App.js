@@ -82,7 +82,16 @@ function App() {
      };
 
       const handleFileUpload = (data) => {
-        setNumbers(data.numbers);
+       // Limpiar el estado antes de mostrar la nueva gráfica
+        setNumbers([]); // Limpia los números anteriores
+        setShowResults(false); // Limpia la pantalla previa
+        setSelectedIndex(null);
+        
+        // Luego carga los nuevos números
+        setNumbers(data);  // Actualiza los números desde el archivo CSV
+        setShowResults(true); // Muestra la nueva gráfica
+        setShowForm(false);  // Oculta el formulario de generación
+        setShowMainDesign(false); // Oculta el diseño principal
       };
 
       const handleImportSuccess = () => {
