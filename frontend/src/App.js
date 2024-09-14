@@ -5,6 +5,7 @@ import NumberChart from './components/NumberChart';
 import CSVExporter from './components/CSVExporter';
 import CSVImporter from './components/CSVImporter';
 import StatisticalTest from './components/StatisticalTest';
+import RandomVariables from './components/RandomVariables';
 import './styles.css';
 import './App.css' 
 
@@ -95,6 +96,7 @@ function App() {
               <ul className="nav-list d-flex list-unstyled">
                 <li className="mx-3"><button href="#" onClick={toggleFormVisibility} className="btn custom-button">Generar números aleatorios</button></li>
                 <li className="mx-3"><StatisticalTest numbers={numbers} /></li>
+                <li className="mx-3"><RandomVariables numbers={numbers} /></li>
                 <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} /></li>
                 <li className="mx-3"><CSVImporter onFileUpload={handleFileUpload} onImportSuccess={handleImportSuccess}/></li>
               </ul>
