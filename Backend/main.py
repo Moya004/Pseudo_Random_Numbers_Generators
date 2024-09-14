@@ -2,8 +2,8 @@ from fastapi import FastAPI, Form, File, UploadFile
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
-from generators import MersenneTwister, XORShift, BBS, CongruencialMixto, Multiplicativo
-from statisticalTests import PruebaFrecuencias, PruebaPromedios, PruebaSeries, PruebaKolmogorovSmirnov, PruebaPoker, TestRequest
+from functionalities.generators import MersenneTwister, XORShift, BBS, CongruencialMixto, Multiplicativo
+from functionalities.statisticalTests import PruebaFrecuencias, PruebaPromedios, PruebaSeries, PruebaKolmogorovSmirnov, PruebaPoker, TestRequest
 import csv
 from io import StringIO
 
