@@ -8,7 +8,7 @@ const CSVImporter = ({ onFileUpload, onImportSuccess }) => {
         const file = event.target.files[0];
         if (file && file.type === 'text/csv') {
             setError('');
-            onFileUpload(file);
+            handleFileUpload(file);  // Subir el archivo cuando se selecciona
         } else {
             setError('Por favor, seleccione un archivo CSV válido.');
         }
@@ -16,9 +16,9 @@ const CSVImporter = ({ onFileUpload, onImportSuccess }) => {
 
     const handleFileUpload = (file) => {
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('archivo', file);
 
-        fetch('http://localhost:3000/upload', {
+        fetch('https://pseudo-random-numbers-generators.onrender.com/import', {
             method: 'POST',
             body: formData
         })
@@ -31,7 +31,7 @@ const CSVImporter = ({ onFileUpload, onImportSuccess }) => {
         .then(data => {
             console.log('Archivo procesado:', data);
             onFileUpload(data);
-            setSuccessMessage('Archivo cargado correctamente. A continuación puede realizar pruebas estadísticas sobre el archivo cargado.');
+            setSuccessMessage('Archivo cargado correctamente');
             onImportSuccess();
         })
         .catch(error => {
