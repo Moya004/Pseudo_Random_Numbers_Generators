@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from functionalities.generators import MersenneTwister, XORShift, BBS, CongruencialMixto, Multiplicativo
 from functionalities.statisticalTests import PruebaFrecuencias, PruebaPromedios, PruebaSeries, PruebaKolmogorovSmirnov, PruebaPoker, TestRequest
+from functionalities.nonUniformVariables import DistributionRequest, Poisson, Exponential, UniformAB
+
 import csv
 from io import StringIO
 
@@ -91,6 +93,28 @@ async def test(request: TestRequest):
     
     return JSONResponse({'passed' : tester.test(data= request.datos)})
 
+
+@app.post('/transformToVariable', response_class=JSONResponse)
+async def transform(request: DistributionRequest) -> List[float]:
+
+    rango_tuple = tuple(request.rango)
+
+    match request.dist:
+        
+        case 'Distribución Exponencial':
+            transformer = Exponential()
+        
+        case 'Distribución Poisson':
+            transformer = Poisson()
+
+        case 'Distribución Uniforme entre a - b':
+            transformer = UniformAB()
+
+        case _:
+            return JSONResponse({"error": "Invalid distribution selected"}, status_code=400)
+    
+    return JSONResponse(transformer.trasnformToVariable(data=request.data, mean=request.mean, rango=rango_tuple))
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run('main:app', host='0.0.0.0')
+    uvicorn.run('main:app')

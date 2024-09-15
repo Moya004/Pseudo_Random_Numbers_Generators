@@ -6,6 +6,8 @@ from scipy.stats import poisson
 class DistributionRequest(BaseModel):
     dist: str
     data: list[float]
+    mean: float
+    rango: list[float]
 
 class ProbabilityDistribution(ABC):
 
@@ -16,7 +18,7 @@ class ProbabilityDistribution(ABC):
 
 class Exponential(ProbabilityDistribution):
 
-    def trasnformToVariable(self, data: list[float], mean: float) -> list[float]:
+    def trasnformToVariable(self, data: list[float], mean: float, rango: tuple = None) -> list[float]:
         res = []
         f = lambda x: -mean * ln(x)
         for val in data:
@@ -26,7 +28,7 @@ class Exponential(ProbabilityDistribution):
 
 class UniformAB(ProbabilityDistribution):
 
-    def trasnformToVariable(self, data: list[float], rango: tuple[float]) -> list[float]:
+    def trasnformToVariable(self, data: list[float], rango: tuple[float], mean: float = None) -> list[float]:
         res = []
         f = lambda x: rango[0] + (rango[1] - rango[0]) * x
         for val in data:
@@ -36,7 +38,7 @@ class UniformAB(ProbabilityDistribution):
 
 
 class Poisson(ProbabilityDistribution):
-    def trasnformToVariable(self, data: list[float], mean: float) -> list[float]:
+    def trasnformToVariable(self, data: list[float], mean: float, rango: tuple = None) -> list[float]:
         res = []
         lamd_3 = [float(poisson.cdf(k, mean)) for k in range(int(3 * mean) + 1)]
 
