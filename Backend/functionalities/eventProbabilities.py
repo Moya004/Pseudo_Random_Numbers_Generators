@@ -1,3 +1,16 @@
+from pydantic import BaseModel
+from typing import List, Optional
+
+
+class ProbabilityRequest(BaseModel):
+    data: List[float]
+    event_type: str  
+    value_x: Optional[float] = None 
+    range_a: Optional[float] = None 
+    range_b: Optional[float] = None 
+    groupsOf: Optional[int] = None
+
+
 def equalX(data: list[float], x:float) -> float:
     return len(list(filter(lambda z: z == x, data))) / len(data)
 
@@ -37,7 +50,7 @@ def inRangeOpenOpen(data: list[float], a: float, b: float) -> float:
 #########################################################################
 
 
-def groupLessThanX(data: list[float], x: float, groupsOf: int) -> float:
+def groupEqualX(data: list[float], x: float, groupsOf: int) -> float:
     n = len(data) // groupsOf
     return len(list(filter(lambda z: z == x, data[:n + 1]))) / n
 
@@ -85,3 +98,6 @@ def groupInRangeOpenOpen(data: list[float], a: float, b: float, groupsOf: int) -
 ##############################################################################################
 
 
+def conditional_probability(data: List[float], eventA_func, eventB_func, kwargsA, kwargsB) -> float:
+    data_B = list(filter(lambda x: eventB_func([x], **kwargsB) > 0, data))
+    return len(list(filter(lambda z: eventA_func([z], **kwargsA), data_B))) / len(data_B)
