@@ -172,6 +172,9 @@ async def experiment(request: ProbabilityRequest):
 @app.post('/conditional_experiment', response_class=JSONResponse)
 async def cond_experiment(request: ProbabilityRequest) -> float:
     pass
+
+
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run('main:app')
+    uvicorn.run('main:app', host='0.0.0.0')
