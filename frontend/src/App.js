@@ -105,6 +105,12 @@ function App() {
         alert('Archivo importado y números procesados');
     };
 
+    //manejar el estado de las variables aleatorias
+    const handleNumbersGenerated = (generatedNumbers) => {
+      setNumbers(generatedNumbers);
+
+      };
+
     return (
         <div className="app-container">
         <header className="header-container"> <h1 className="title"> </h1>
@@ -112,7 +118,7 @@ function App() {
               <ul className="nav-list d-flex list-unstyled">
                 <li className="mx-3"><button href="#" onClick={toggleFormVisibility} className="btn custom-button">Generar números aleatorios</button></li>
                 <li className="mx-3"><StatisticalTest numbers={numbers} /></li>
-                <li className="mx-3"><RandomVariables numbers={numbers} /></li>
+                <li className="mx-3"><RandomVariables numbers={numbers} onNumbersGenerated={handleNumbersGenerated} /></li>
                 <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} fileImported={fileImported} /></li>
                 <li className="mx-3"><CSVImporter onFileUpload={handleFileUpload} onImportSuccess={handleImportSuccess}/></li>
               </ul>

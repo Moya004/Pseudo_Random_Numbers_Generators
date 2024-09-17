@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import NumberChart from './NumberChart';
 
-function RandomVariables({ numbers, reset, fileImported }) {
+function RandomVariables({ numbers, reset, onNumbersGenerated}) {
     const [selectedTest, setSelectedTest] = useState('');
     const [testResult, setTestResult] = useState(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -62,6 +63,7 @@ function RandomVariables({ numbers, reset, fileImported }) {
 
             const result = await response.json();
             setTestResult(result);
+            onNumbersGenerated(result);
             
         } catch (error) {
             console.error('Error al enviar los datos:', error);
