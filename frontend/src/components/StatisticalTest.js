@@ -1,7 +1,6 @@
 import React, { useState, useEffect} from 'react';
-import NumberChart from './NumberChart';
 
-function StatisticalTests({ numbers, reset }) {
+function StatisticalTests({ numbers, reset}) {
     const [selectedTest, setSelectedTest] = useState('');
     const [testResult, setTestResult] = useState(null);
     const [isVisible, setIsVisible] = useState(false);

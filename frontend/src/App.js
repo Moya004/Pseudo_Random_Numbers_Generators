@@ -15,9 +15,10 @@ function App() {
     const [showForm, setShowForm] = useState(false); 
     const [showResults, setShowResults] = useState(false);
     const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
-    const [showImporter, setShowImporter] = useState(false);
     const [showTest, setShowTest] = useState(false);
     const [showMainDesign, setShowMainDesign] = useState(true);
+    const [fileImported, setFileImported] = useState(false);
+    const [resetVariables, setResetVariables] = useState(false);  //Variables no uniformes
 
 
     const handleGenerate = async (algorithm, count, params) => {
@@ -27,6 +28,7 @@ function App() {
         setShowResults(false);
         return;
       }
+      setFileImported(false)
       setSelectedAlgorithm(algorithm);
         
         const formData = new FormData();
@@ -47,7 +49,7 @@ function App() {
         setNumbers(data);
         setSelectedIndex(null); 
         setShowResults(true);
-        
+        setResetVariables(true);
     };
 
     const handleSelect = (index) => {
@@ -63,6 +65,7 @@ function App() {
         setNumbers([]); 
         setShowResults(false);
         setSelectedAlgorithm('');
+        
 
       } else{
         setShowForm(true);
@@ -72,6 +75,7 @@ function App() {
         setSelectedAlgorithm('');
         setShowTest(false);
         setShowMainDesign(false);
+        setResetVariables(true);
       }
       };
 
@@ -82,16 +86,19 @@ function App() {
      };
 
       const handleFileUpload = (data) => {
-       // Limpiar el estado antes de mostrar la nueva gráfica
         setNumbers([]); // Limpia los números anteriores
         setShowResults(false); // Limpia la pantalla previa
         setSelectedIndex(null);
-        
+        setShowForm(false);
+        setShowMainDesign(false); //diseño principal
+         
         // Luego carga los nuevos números
         setNumbers(data);  // Actualiza los números desde el archivo CSV
         setShowResults(true); // Muestra la nueva gráfica
         setShowForm(false);  // Oculta el formulario de generación
         setShowMainDesign(false); // Oculta el diseño principal
+        setFileImported(true);
+        setResetVariables(true);
       };
 
       const handleImportSuccess = () => {
@@ -106,7 +113,7 @@ function App() {
                 <li className="mx-3"><button href="#" onClick={toggleFormVisibility} className="btn custom-button">Generar números aleatorios</button></li>
                 <li className="mx-3"><StatisticalTest numbers={numbers} /></li>
                 <li className="mx-3"><RandomVariables numbers={numbers} /></li>
-                <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} /></li>
+                <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} fileImported={fileImported} /></li>
                 <li className="mx-3"><CSVImporter onFileUpload={handleFileUpload} onImportSuccess={handleImportSuccess}/></li>
               </ul>
             </nav>
@@ -119,7 +126,7 @@ function App() {
         </div>
         )}
           <main>
-            {showForm && <AlgorithmForm onGenerate={handleGenerate} />} { }
+            {showForm && <AlgorithmForm onGenerate={handleGenerate}/>} { }
             {showResults && numbers.length > 0 &&
             (
                 <NumberChart 

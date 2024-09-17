@@ -1,7 +1,12 @@
 import React from 'react';
 
-const CSVExporter = ({ numbers, algorithm}) => {
+const CSVExporter = ({ numbers, algorithm, fileImported}) => {
     const handleExportCSV = () => {
+
+        if (fileImported) {
+            exportCSV(numbers);
+            return;
+        }
 
         if (!algorithm || algorithm === 'select an algorithm') {
             alert('Por favor selecciona un algoritmo antes de exportar.');
@@ -13,6 +18,11 @@ const CSVExporter = ({ numbers, algorithm}) => {
             return;
         }
 
+        exportCSV(numbers);
+    };
+
+    const exportCSV=(numbers) =>
+    {
         const csvContent = 'data:text/csv;charset=utf-8,' + numbers.join('\n');
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement('a');

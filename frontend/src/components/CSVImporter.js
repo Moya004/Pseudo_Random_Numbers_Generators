@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const CSVImporter = ({ onFileUpload, onImportSuccess }) => {
+const CSVImporter = ({ onFileUpload, onImportSuccess}) => {
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
@@ -10,11 +10,12 @@ const CSVImporter = ({ onFileUpload, onImportSuccess }) => {
             setError('');
             handleFileUpload(file);  // Subir el archivo cuando se selecciona
         } else {
-            setError('Por favor, seleccione un archivo CSV válido.');
+            console.log('Por favor, seleccione un archivo CSV válido.');
         }
     };
 
     const handleFileUpload = (file) => {
+
         const formData = new FormData();
         formData.append('archivo', file);
 
@@ -31,7 +32,7 @@ const CSVImporter = ({ onFileUpload, onImportSuccess }) => {
         .then(data => {
             console.log('Archivo procesado:', data);
             onFileUpload(data);
-            setSuccessMessage('Archivo cargado correctamente');
+            console.log('Archivo cargado correctamente');
             onImportSuccess();
         })
         .catch(error => {
