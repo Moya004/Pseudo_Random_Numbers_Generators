@@ -35,20 +35,28 @@ function RandomVariables({ numbers, reset, onNumbersGenerated}) {
         // Validación para las distribuciones que requieren un rango
         if (test === 'Distribución Uniforme entre a - b') {
             if (range.a === '' || range.b === '' || parseFloat(range.a) >= parseFloat(range.b)) {
-                alert('Por favor ingrese un valor válido para a y b (a < b).');
-                return;
+                let a;
+                a = prompt('Ingrese el valor de a:');
+                let b;
+                b = prompt('Ingrese el valor de b:');
+                if(a<b)
+                {
+                    alert('a debe ser mayor que b')
+                    return;
+                }
+               
             }
         }
 
         // Calcular el promedio de los números generados
-        const calculatedMean = numbers.reduce((acc, num) => acc + num, 0) / numbers.length;
-        setMean(calculatedMean);
+        let mean;
+        mean = prompt('Ingrese la media:');
 
         // Creación del objeto JSON para enviar al backend
         const dataToSend = {
             dist: test,
             data: numbers,
-            mean: calculatedMean || null, // Solo para distribuciones que lo necesiten
+            mean: mean || null, // Solo para distribuciones que lo necesiten
             rango: test === 'Distribución Uniforme entre a - b' ? [range.a, range.b] : []
         };
 
@@ -62,7 +70,6 @@ function RandomVariables({ numbers, reset, onNumbersGenerated}) {
             });
 
             const result = await response.json();
-            setTestResult(result);
             onNumbersGenerated(result);
             
         } catch (error) {
