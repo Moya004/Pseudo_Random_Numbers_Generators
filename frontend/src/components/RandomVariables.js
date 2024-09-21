@@ -137,7 +137,9 @@ function RandomVariables({ numbers, reset, onNumbersGenerated }) {
 
             const result = await response.json();
             console.log("Resultado: " + JSON.stringify(result))
-            setTestResult(result);
+            setGeneratedVariables(result); // Guarda las nuevas variables generadas
+            onNumbersGenerated(result);
+
         } catch (error) {
             console.error('Error al enviar los datos:', error);
         }
