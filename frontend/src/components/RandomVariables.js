@@ -44,12 +44,6 @@ function RandomVariables({ numbers, reset, onNumbersGenerated }) {
             rango: [0, 0]
         };
 
-        if (!numbers || numbers.length === 0) {
-            alert('No hay números generados para generar variables aleatorias.');
-            setIsVisible(false);
-            return;
-        }
-
         if (test === 'Eventos') {
             setEvent('Eventos');
             return;
