@@ -11,6 +11,7 @@ import './App.css'
 
 function App() {
     const [numbers, setNumbers] = useState([]);
+    const [fileNumbers, setFileNumbers] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [showForm, setShowForm] = useState(false); 
     const [showResults, setShowResults] = useState(false);
@@ -46,11 +47,15 @@ function App() {
         });
 
         const data = await response.json();
+        printResults(data);
+    };
+
+    function printResults(data) {
         setNumbers(data);
         setSelectedIndex(null); 
         setShowResults(true);
         setResetVariables(true);
-    };
+    }
 
     const handleSelect = (index) => {
         setSelectedIndex(index);
@@ -86,19 +91,21 @@ function App() {
      };
 
       const handleFileUpload = (data) => {
-        setNumbers([]); // Limpia los números anteriores
+        setFileNumbers([]); // Limpia los números anteriores
         setShowResults(false); // Limpia la pantalla previa
         setSelectedIndex(null);
         setShowForm(false);
         setShowMainDesign(false); //diseño principal
          
         // Luego carga los nuevos números
-        setNumbers(data);  // Actualiza los números desde el archivo CSV
+        setFileNumbers(data);  // Actualiza los números desde el archivo CSV
         setShowResults(true); // Muestra la nueva gráfica
         setShowForm(false);  // Oculta el formulario de generación
         setShowMainDesign(false); // Oculta el diseño principal
         setFileImported(true);
         setResetVariables(true);
+
+        printResults(data);
       };
 
       const handleImportSuccess = () => {
@@ -118,8 +125,8 @@ function App() {
               <ul className="nav-list d-flex list-unstyled">
                 <li className="mx-3"><button href="#" onClick={toggleFormVisibility} className="btn custom-button">Generar números aleatorios</button></li>
                 <li className="mx-3"><StatisticalTest numbers={numbers} /></li>
-                <li className="mx-3"><RandomVariables numbers={numbers} onNumbersGenerated={handleNumbersGenerated} /></li>
-                <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} fileImported={fileImported} /></li>
+                <li className="mx-3"><RandomVariables numbers={fileNumbers} onNumbersGenerated={handleNumbersGenerated} /></li>
+                <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} /></li>
                 <li className="mx-3"><CSVImporter onFileUpload={handleFileUpload} onImportSuccess={handleImportSuccess}/></li>
               </ul>
             </nav>

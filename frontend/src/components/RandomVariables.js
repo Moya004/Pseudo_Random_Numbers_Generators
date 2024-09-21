@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import NumberChart from './NumberChart';
+import CSVExporter from './CSVExporter'; 
 
-function RandomVariables({ numbers, reset, onNumbersGenerated}) {
-    const [selectedTest, setSelectedTest] = useState('');
+function RandomVariables({ numbers, reset, onNumbersGenerated }) {
     const [testResult, setTestResult] = useState(null);
+    const [generatedVariables, setGeneratedVariables] = useState([]); // Para las variables generadas
     const [isVisible, setIsVisible] = useState(false);
-    const [mean, setMean] = useState(null); // Para distribuciones que requieran media
-    const [range, setRange] = useState({ a: ' ', b: ' ' }); // Para distribuciones con rango
-    const [eventType, setEventType] = useState(''); // Para experimentos
-    const [eventResult, setEventResult] = useState(null);
+    const [range, setRange] = useState({ a: 0.0, b: 0.0});
+    const [event, setEvent] = useState(null);
+    const [experiment, setExperiment] = useState(null)
+    const [eventParams, setEventParams] = useState({});
 
     const tests = [
         'Distribución Exponencial',
@@ -17,48 +18,60 @@ function RandomVariables({ numbers, reset, onNumbersGenerated}) {
         'Eventos'
     ];
 
+    const events = [
+        'equalX', 'lessThanX', 'lessEqualThanX', 'greaterThanX', 'greaterEqualThanX',
+        'inRangeCloseOpen', 'inRangeCloseClose', 'inRangeOpenClose', 'inRangeOpenOpen'
+    ];
+
     useEffect(() => {
         setTestResult(null);
-        setEventResult(null);
-        setSelectedTest('');
-        setMean(null);
         setRange({ a: '', b: '' });
+        setEvent(null);
+        setEventParams({});
+        setGeneratedVariables([]); // Reinicia las variables generadas cada vez que se haga reset
     }, [reset]);
 
     const handleTestSelection = async (test) => {
+        setEvent(null);
+        setEventParams({});
+        setRange({ a: 0, b: 0});
+        setGeneratedVariables([]); // Reinicia las variables generadas al seleccionar una nueva opción
+
+        let dataToSend = {
+            dist: test,
+            data: numbers,
+            mean: null,
+            rango: [0, 0]
+        };
+
         if (!numbers || numbers.length === 0) {
             alert('No hay números generados para generar variables aleatorias.');
             setIsVisible(false);
             return;
         }
 
-        // Validación para las distribuciones que requieren un rango
-        if (test === 'Distribución Uniforme entre a - b') {
-            if (range.a === '' || range.b === '' || parseFloat(range.a) >= parseFloat(range.b)) {
-                let a;
-                a = prompt('Ingrese el valor de a:');
-                let b;
-                b = prompt('Ingrese el valor de b:');
-                if(a<b)
-                {
-                    alert('a debe ser mayor que b')
-                    return;
-                }
-               
-            }
+        if (test === 'Eventos') {
+            setEvent('Eventos');
+            return;
         }
 
-        // Calcular el promedio de los números generados
-        let mean;
-        mean = prompt('Ingrese la media:');
+        if (test === 'Distribución Uniforme entre a - b') {
+            let a = parseFloat(prompt('Ingrese el valor de a:'));
+            let b = parseFloat(prompt('Ingrese el valor de b:'));
 
-        // Creación del objeto JSON para enviar al backend
-        const dataToSend = {
-            dist: test,
-            data: numbers,
-            mean: mean || null, // Solo para distribuciones que lo necesiten
-            rango: test === 'Distribución Uniforme entre a - b' ? [range.a, range.b] : []
-        };
+            if (a === null || b === null || parseFloat(a) >= parseFloat(b)) {
+                alert('Debe ingresar un valor válido para a y b, y a debe ser menor que b.');
+                return;
+            }
+
+            dataToSend.rango = [a, b]
+        }
+
+        if (test === 'Distribución Exponencial' || test === 'Distribución Poisson' || test === 'Distribución Uniforme entre a - b') {
+            dataToSend.mean = parseFloat(prompt('Ingrese la media:'));
+        }
+
+        console.log("Información enviada: " + JSON.stringify(dataToSend))
 
         try {
             const response = await fetch('https://pseudo-random-numbers-generators.onrender.com/transformToVariable', {
@@ -70,27 +83,54 @@ function RandomVariables({ numbers, reset, onNumbersGenerated}) {
             });
 
             const result = await response.json();
-            onNumbersGenerated(result);
-            
+            console.log("Recibido: " + result)
+            setGeneratedVariables(result); // Guarda las nuevas variables generadas
+            onNumbersGenerated(result); // Llama al callback con las nuevas variables
         } catch (error) {
             console.error('Error al enviar los datos:', error);
         }
     };
 
-    const handleEventExperiment = async (eventType) => {
-        if (!numbers || numbers.length === 0) {
-            alert('No hay números disponibles para realizar el experimento.');
-            return;
+    const handleEventSelection = (selectedEvent) => {
+        let params = {};
+        switch (selectedEvent) {
+            case 'equalX':
+            case 'lessThanX':
+            case 'lessEqualThanX':
+            case 'greaterThanX':
+            case 'greaterEqualThanX':
+                params.value_x = parseFloat(prompt('Ingrese el valor de X:'));
+                break;
+            case 'inRangeCloseOpen':
+            case 'inRangeCloseClose':
+            case 'inRangeOpenClose':
+            case 'inRangeOpenOpen':
+                params.range_a = parseFloat(prompt('Ingrese el valor de A:'));
+                params.range_b = parseFloat(prompt('Ingrese el valor de B:'));
+                break;
+            default:
+                break;
         }
 
-        // Creación del objeto JSON para enviar al backend para el experimento
-        const experimentData = {
+        setExperiment(selectedEvent);
+        setEventParams(params);
+        console.log(params)
+    };
+
+    const handleEventSubmit = async () => {
+        console.log(event)
+        if (event == "") return;
+
+        const dataToSend = {
             data: numbers,
-            event_type: eventType,
-            value_x: 10, // Ejemplo: valor x puede ser dinámico basado en el tipo de evento
-            range_a: range.a || null,
-            range_b: range.b || null,
+            event_type: experiment,
+            value_x: eventParams.value_x,
+            range_a: eventParams.range_a,
+            range_b: eventParams.range_b,
+            groupsOf: eventParams.groupsOf
         };
+
+        console.log(JSON.stringify(dataToSend))
 
         try {
             const response = await fetch('https://pseudo-random-numbers-generators.onrender.com/experiment', {
@@ -98,20 +138,20 @@ function RandomVariables({ numbers, reset, onNumbersGenerated}) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(experimentData),
+                body: JSON.stringify(dataToSend),
             });
 
             const result = await response.json();
-            setEventResult(result.probability);
+            console.log("Resultado: " + JSON.stringify(result))
+            setTestResult(result);
         } catch (error) {
-            console.error('Error al realizar el experimento:', error);
+            console.error('Error al enviar los datos:', error);
         }
     };
 
     const toggleVisibility = () => {
         setIsVisible(!isVisible);
-        setTestResult(null); 
-        setEventResult(null);
+        setTestResult(null);
     };
 
     return (
@@ -139,40 +179,27 @@ function RandomVariables({ numbers, reset, onNumbersGenerated}) {
                     ))}
                 </div>
             )}
-            {selectedTest === 'Distribución Uniforme entre a - b' && (
-                <div className="range-inputs">
-                    <label>
-                        a: 
-                        <input 
-                            type="number" 
-                            value={range.a} 
-                            onChange={(e) => setRange({ ...range, a: e.target.value })} 
-                        />
-                    </label>
-                    <label>
-                        b: 
-                        <input 
-                            type="number" 
-                            value={range.b} 
-                            onChange={(e) => setRange({ ...range, b: e.target.value })} 
-                        />
-                    </label>
+
+            {event === 'Eventos' && (
+                <div>
+                    <select onChange={(e) => handleEventSelection(e.target.value)}>
+                        <option value="">Seleccione un evento</option>
+                        {events.map((event, index) => (
+                            <option key={index} value={event}>{event}</option>
+                        ))}
+                    </select>
+
+                    {event != "" && (
+                        <button onClick={handleEventSubmit}>Enviar</button>
+                    )}
                 </div>
             )}
+
             {testResult && (
                 <div className="test-result mt-3">
                     <h5>Resultado: {JSON.stringify(testResult)}</h5>
                 </div>
             )}
-
-            {/* Botón y sección para experimentos */}
-            <div className="experiment-section">
-                {eventResult && (
-                    <div className="experiment-result mt-3">
-                        <h5>Resultado del experimento: {eventResult}</h5>
-                    </div>
-                )}
-            </div>
         </div>
     );
 }

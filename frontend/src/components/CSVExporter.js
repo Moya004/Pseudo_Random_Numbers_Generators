@@ -8,11 +8,6 @@ const CSVExporter = ({ numbers, algorithm, fileImported}) => {
             return;
         }
 
-        if (!algorithm || algorithm === 'select an algorithm') {
-            alert('Por favor selecciona un algoritmo antes de exportar.');
-            return;
-        }
-
         if (!numbers || numbers.length === 0) {
             alert('No hay números generados para exportar.');
             return;
