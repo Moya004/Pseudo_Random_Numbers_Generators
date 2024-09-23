@@ -32,6 +32,7 @@ function StatisticalTests({ numbers, reset}) {
             prueba: test,
             datos: numbers
         }
+        console.log(requestData)
 
         try {
             const response = await fetch('https://pseudo-random-numbers-generators.onrender.com/test', {

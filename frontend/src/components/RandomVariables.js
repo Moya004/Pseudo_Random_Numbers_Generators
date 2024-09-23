@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import NumberChart from './NumberChart';
-import CSVExporter from './CSVExporter'; 
+
 
 function RandomVariables({ numbers, reset, onNumbersGenerated }) {
     const [testResult, setTestResult] = useState(null);
@@ -32,6 +31,12 @@ function RandomVariables({ numbers, reset, onNumbersGenerated }) {
     }, [reset]);
 
     const handleTestSelection = async (test) => {
+
+        if (!numbers || numbers.length === 0) {
+            alert('No hay números generados o importados.');
+            return;
+        }
+
         setEvent(null);
         setEventParams({});
         setRange({ a: 0, b: 0});
@@ -46,6 +51,7 @@ function RandomVariables({ numbers, reset, onNumbersGenerated }) {
 
         if (test === 'Eventos') {
             setEvent('Eventos');
+            setIsVisible(false);
             return;
         }
 
@@ -137,8 +143,13 @@ function RandomVariables({ numbers, reset, onNumbersGenerated }) {
 
             const result = await response.json();
             console.log("Resultado: " + JSON.stringify(result))
-            setGeneratedVariables(result); // Guarda las nuevas variables generadas
+            alert(JSON.stringify(result))
+
             onNumbersGenerated(result);
+            setGeneratedVariables(result); // Guarda las nuevas variables generadas
+
+            setIsVisible(false); // Cierra la pestaña principal
+            setEvent(null); // Cierra la sección de eventos
 
         } catch (error) {
             console.error('Error al enviar los datos:', error);
@@ -151,30 +162,33 @@ function RandomVariables({ numbers, reset, onNumbersGenerated }) {
     };
 
     return (
-        <div className="dropdown">
-            <button 
-                className="btn custom-button4"
-                onClick={toggleVisibility}
-                id="dropdownMenuButton"
-                aria-haspopup="true" 
-                aria-expanded={isVisible}
-            >
-                Generar variables aleatorias <i className="bi bi-caret-down-fill"></i>
-            </button>
-            {isVisible && (
-                <div className="dropdown-menu show" aria-labelledby="dropdownMenuButton">
-                    {tests.map((test, index) => (
-                        <button 
-                            key={index} 
-                            className="dropdown-item"
-                            onClick={() => handleTestSelection(test)}
-                            style={{ fontFamily: 'Helvetica', fontSize: '14px' }}
-                        >
-                            {test}
-                        </button>
-                    ))}
-                </div>
-            )}
+        <div className="generated-variables-section">
+            <div className="dropdown">
+                <button
+                    className="btn custom-button4"
+                    onClick={toggleVisibility}
+                    id="dropdownMenuButton"
+                    aria-haspopup="true"
+                    aria-expanded={isVisible}
+                >
+                    Generar variables aleatorias <i className="bi bi-caret-down-fill"></i>
+                </button>
+
+                {isVisible && (
+                    <div className="dropdown-menu show" aria-labelledby="dropdownMenuButton">
+                        {tests.map((test, index) => (
+                            <button
+                                key={index}
+                                className="dropdown-item"
+                                onClick={() => handleTestSelection(test)}
+                                style={{ fontFamily: 'Helvetica', fontSize: '14px' }}
+                            >
+                                {test}
+                            </button>
+                        ))}
+                    </div>
+                )}
+            </div>
 
             {event === 'Eventos' && (
                 <div>
@@ -185,15 +199,9 @@ function RandomVariables({ numbers, reset, onNumbersGenerated }) {
                         ))}
                     </select>
 
-                    {event != "" && (
+                    {event !== "" && (
                         <button onClick={handleEventSubmit}>Enviar</button>
                     )}
-                </div>
-            )}
-
-            {testResult && (
-                <div className="test-result mt-3">
-                    <h5>Resultado: {JSON.stringify(testResult)}</h5>
                 </div>
             )}
         </div>

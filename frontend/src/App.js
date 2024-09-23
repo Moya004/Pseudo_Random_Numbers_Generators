@@ -6,15 +6,18 @@ import CSVExporter from './components/CSVExporter';
 import CSVImporter from './components/CSVImporter';
 import StatisticalTest from './components/StatisticalTest';
 import RandomVariables from './components/RandomVariables';
+import DistributionChart from './components/DistributionChart';
 import './styles.css';
 import './App.css' 
 
 function App() {
     const [numbers, setNumbers] = useState([]);
     const [fileNumbers, setFileNumbers] = useState([]);
+    const [generatedNumbers, setGeneratedNumbers] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [showForm, setShowForm] = useState(false); 
     const [showResults, setShowResults] = useState(false);
+    const [showGraph, setShowGrpah] = useState(false);
     const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
     const [showTest, setShowTest] = useState(false);
     const [showMainDesign, setShowMainDesign] = useState(true);
@@ -25,6 +28,7 @@ function App() {
     const handleGenerate = async (algorithm, count, params) => {
       if (algorithm === 'Select an algorithm') {
         setNumbers([]);
+        setGeneratedNumbers([]);
         setSelectedAlgorithm('');
         setShowResults(false);
         return;
@@ -47,11 +51,13 @@ function App() {
         });
 
         const data = await response.json();
+        setFileNumbers(data)
         printResults(data);
     };
 
     function printResults(data) {
         setNumbers(data);
+        setGeneratedNumbers([]);
         setSelectedIndex(null); 
         setShowResults(true);
         setResetVariables(true);
@@ -68,6 +74,7 @@ function App() {
         setShowForm(false);
         setShowMainDesign(true);
         setNumbers([]); 
+        setGeneratedNumbers([]);
         setShowResults(false);
         setSelectedAlgorithm('');
         
@@ -96,6 +103,7 @@ function App() {
         setSelectedIndex(null);
         setShowForm(false);
         setShowMainDesign(false); //diseño principal
+        setNumbers(data) //Actualiza los numeros
          
         // Luego carga los nuevos números
         setFileNumbers(data);  // Actualiza los números desde el archivo CSV
@@ -115,6 +123,8 @@ function App() {
     //manejar el estado de las variables aleatorias
     const handleNumbersGenerated = (generatedNumbers) => {
       setNumbers(generatedNumbers);
+      setShowResults(false);
+      setShowGrpah(true);
 
       };
 
@@ -124,7 +134,7 @@ function App() {
             <nav>
               <ul className="nav-list d-flex list-unstyled">
                 <li className="mx-3"><button href="#" onClick={toggleFormVisibility} className="btn custom-button">Generar números aleatorios</button></li>
-                <li className="mx-3"><StatisticalTest numbers={numbers} /></li>
+                <li className="mx-3"><StatisticalTest numbers={fileNumbers} /></li>
                 <li className="mx-3"><RandomVariables numbers={fileNumbers} onNumbersGenerated={handleNumbersGenerated}/></li>
                 <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} /></li>
                 <li className="mx-3"><CSVImporter onFileUpload={handleFileUpload} onImportSuccess={handleImportSuccess}/></li>
@@ -148,6 +158,10 @@ function App() {
                     selectedIndex={selectedIndex} 
                 />
             )}
+             {/* Mostrar la gráfica solo si hay variables generadas */}
+              {showGraph && generatedNumbers.length > 0 && (
+                <DistributionChart data={generatedNumbers}/>
+              )}
           </main>
         </div>
       );    
