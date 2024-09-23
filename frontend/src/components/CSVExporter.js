@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CSVExporter = ({ numbers, algorithm, fileImported}) => {
+const CSVExporter = ({ numbers, algorithm, fileImported, generatedNumbers}) => {
     const handleExportCSV = () => {
 
         if (fileImported) {
@@ -10,6 +10,11 @@ const CSVExporter = ({ numbers, algorithm, fileImported}) => {
 
         if (!numbers || numbers.length === 0) {
             alert('No hay números generados para exportar.');
+            return;
+        }
+
+        if (generatedNumbers && generatedNumbers.length > 0) {
+            exportCSV(generatedNumbers);
             return;
         }
 

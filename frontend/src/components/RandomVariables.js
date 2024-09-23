@@ -148,7 +148,6 @@ function RandomVariables({ numbers, reset, onNumbersGenerated }) {
             onNumbersGenerated(result);
             setGeneratedVariables(result); // Guarda las nuevas variables generadas
 
-            setIsVisible(false); // Cierra la pestaña principal
             setEvent(null); // Cierra la sección de eventos
 
         } catch (error) {

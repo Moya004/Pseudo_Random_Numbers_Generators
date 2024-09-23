@@ -107,6 +107,7 @@ function App() {
         setShowForm(false);
         setShowMainDesign(false); //diseño principal
         setNumbers(data) //Actualiza los numeros
+        setShowGraph(false);
          
         // Luego carga los nuevos números
         setFileNumbers(data);  // Actualiza los números desde el archivo CSV
@@ -140,7 +141,7 @@ function App() {
                 <li className="mx-3"><button href="#" onClick={toggleFormVisibility} className="btn custom-button">Generar números aleatorios</button></li>
                 <li className="mx-3"><StatisticalTest numbers={fileNumbers} /></li>
                 <li className="mx-3"><RandomVariables numbers={fileNumbers} onNumbersGenerated={handleNumbersGenerated}/></li>
-                <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} /></li>
+                <li className="mx-3"><CSVExporter numbers={numbers} algorithm={selectedAlgorithm} generatedNumbers={generatedNumbers} /></li>
                 <li className="mx-3"><CSVImporter onFileUpload={handleFileUpload} onImportSuccess={handleImportSuccess}/></li>
               </ul>
             </nav>
