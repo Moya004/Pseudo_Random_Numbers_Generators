@@ -17,7 +17,7 @@ function App() {
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [showForm, setShowForm] = useState(false); 
     const [showResults, setShowResults] = useState(false);
-    const [showGraph, setShowGrpah] = useState(false);
+    const [showGraph, setShowGraph] = useState(false);
     const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
     const [showTest, setShowTest] = useState(false);
     const [showMainDesign, setShowMainDesign] = useState(true);
@@ -31,6 +31,7 @@ function App() {
         setGeneratedNumbers([]);
         setSelectedAlgorithm('');
         setShowResults(false);
+        setShowGraph(false);
         return;
       }
       setFileImported(false)
@@ -77,6 +78,7 @@ function App() {
         setGeneratedNumbers([]);
         setShowResults(false);
         setSelectedAlgorithm('');
+        setShowGraph(false);
         
 
       } else{
@@ -88,6 +90,7 @@ function App() {
         setShowTest(false);
         setShowMainDesign(false);
         setResetVariables(true);
+        setShowGraph(false);
       }
       };
 
@@ -122,9 +125,10 @@ function App() {
 
     //manejar el estado de las variables aleatorias
     const handleNumbersGenerated = (generatedNumbers) => {
-      setNumbers(generatedNumbers);
+      setGeneratedNumbers(generatedNumbers);
       setShowResults(false);
-      setShowGrpah(true);
+      setShowGraph(true);
+      setShowForm(false); 
 
       };
 
@@ -158,10 +162,12 @@ function App() {
                     selectedIndex={selectedIndex} 
                 />
             )}
-             {/* Mostrar la gráfica solo si hay variables generadas */}
-              {showGraph && generatedNumbers.length > 0 && (
-                <DistributionChart data={generatedNumbers}/>
-              )}
+             {showGraph && generatedNumbers.length > 0 && (
+              <>
+                {console.log("Datos enviados a DistributionChart:", generatedNumbers)}
+                <DistributionChart data={generatedNumbers} />
+              </>
+            )}
           </main>
         </div>
       );    

@@ -33,8 +33,8 @@ function DistributionChart({ data, distributionType }) {
     }, [data, distributionType]);
 
     return (
-        <div style={{ width: '1000px', height: '450px', margin: '150px auto', marginRight:'1000%', marginLeft: '-50%' }}>
-            <Line data={chartData} options={options} />
+        <div style={{  width: '1000%', height: '500px', margin: '-1.5%',  marginLeft: '-2%', marginRight:'-30px', marginLeft: '200px' }}>
+            <Line data={chartData}/>
         </div>
     );
 }
